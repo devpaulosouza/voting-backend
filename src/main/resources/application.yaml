@@ -1,0 +1,16 @@
+spring:
+  web:
+    locale: pt_BR
+    locale-resolver: fixed
+  profiles:
+    active: ${ENV:local}
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres?currentSchema=voting-db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+application:
+  basic:
+    user: ${BASIC_USER:admin}
+    password: ${BASIC_PASSWORD:asdqwe123}
