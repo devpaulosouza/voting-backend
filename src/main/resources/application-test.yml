@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+        on-profile: test
+  jpa:
+    show_sql: true
+  flyway:
+    locations: classpath:db/migration,classpath:db/loaddata
+
+application:
+  basic:
+    user: ${BASIC_USER:test}
+    password: ${BASIC_PASSWORD:asdqwe}

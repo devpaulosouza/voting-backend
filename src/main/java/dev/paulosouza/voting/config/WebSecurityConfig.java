@@ -49,7 +49,8 @@ public class WebSecurityConfig {
 						"/swagger-resources/**",
 						"/v3/api-docs/**",
 						"/favicon.ico",
-						"/error"
+						"/error",
+						"/public/**"
 				)
 				.permitAll()
 				.anyRequest()
