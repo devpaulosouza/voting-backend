@@ -7,4 +7,6 @@ public class ReCaptchaResponse {
 
     private boolean success;
 
+    private double score;
+
 }
