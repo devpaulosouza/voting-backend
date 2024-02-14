@@ -1,7 +1,11 @@
 package dev.paulosouza.voting.controller;
 
+import dev.paulosouza.voting.dto.response.PollResponse;
+import dev.paulosouza.voting.service.PollService;
 import dev.paulosouza.voting.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +18,31 @@ public class PublicController {
 
     private final VoteService voteService;
 
+    private final PollService pollService;
+
     @PatchMapping("/polls/{pollId}/usernames/{username}")
     public ResponseEntity<Void> vote(
             @PathVariable("pollId") UUID pollId,
-            @PathVariable("username") String username
+            @PathVariable("username") String username,
+            @RequestParam("recaptcha") String recaptcha
     ) {
-        this.voteService.vote(pollId, username);
+        this.voteService.vote(pollId, username, recaptcha);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/polls")
+    public ResponseEntity<Page<PollResponse>> getPolls(Pageable pageable) {
+        Page<PollResponse> response = this.pollService.findAll(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/polls/{pollId}")
+    public ResponseEntity<PollResponse> getPolls(@PathVariable("pollId") UUID pollId) {
+        PollResponse response = this.pollService.find(pollId);
+
+        return ResponseEntity.ok(response);
     }
 
 }

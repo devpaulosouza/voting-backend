@@ -10,8 +10,6 @@ public class NotFoundException extends AbstractThrowableProblem {
 
 	static final URI TYPE = URI.create("https://paulosouza.dev/not-found");
 
-	private final UUID id;
-
 	public NotFoundException(final UUID id) {
 		super(
 				TYPE,
@@ -19,7 +17,15 @@ public class NotFoundException extends AbstractThrowableProblem {
 				Status.NOT_FOUND,
 				String.format("Entity with id %s was not found", id)
 		);
-		this.id = id;
+	}
+
+	public NotFoundException(final String id) {
+		super(
+				TYPE,
+				"Not found",
+				Status.NOT_FOUND,
+				String.format("Entity with id %s was not found", id)
+		);
 	}
 
 }

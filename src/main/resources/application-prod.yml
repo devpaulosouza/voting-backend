@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-        on-profile: test
+        on-profile: prod
   jpa:
     show_sql: true
   flyway:

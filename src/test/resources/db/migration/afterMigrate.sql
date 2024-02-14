@@ -2,6 +2,8 @@ INSERT INTO options(username, name)
 VALUES('test1', 'Test1');
 INSERT INTO options(username, name)
 VALUES('test2', 'Test2');
+INSERT INTO options(username, name)
+VALUES('delete', 'Option delete');
 
 
 INSERT INTO polls(id, title, subtitle, stopped)

@@ -61,4 +61,14 @@ public class PollController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @Operation(description = "Deletes a poll")
+    @ApiResponse(responseCode = "204", description = "Poll deleted")
+    @DeleteMapping("/{pollId}")
+    public ResponseEntity<Void> delete(@PathVariable("pollId") UUID pollId) {
+        this.service.delete(pollId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

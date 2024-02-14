@@ -11,6 +11,7 @@ import dev.paulosouza.voting.model.SummarizedVote;
 import dev.paulosouza.voting.model.id.SummarizedVoteId;
 import dev.paulosouza.voting.repository.OptionRepository;
 import dev.paulosouza.voting.repository.PollRepository;
+import dev.paulosouza.voting.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,8 @@ public class PollService {
     private final PollRepository repository;
 
     private final OptionRepository optionRepository;
+
+    private final VoteRepository voteRepository;
 
     public PollResponse create(PollRequest request) {
         log.info("creating poll {}", request);
@@ -61,6 +64,13 @@ public class PollService {
         entity.setStopped(true);
 
         this.repository.save(entity);
+    }
+
+    public void delete(UUID id) {
+        Poll poll = this.getPoll(id);
+
+        this.voteRepository.deleteAllByPollId(id);
+        this.repository.delete(poll);
     }
 
     private SummarizedVote buildSummarizedVotes(Poll poll, Option option) {

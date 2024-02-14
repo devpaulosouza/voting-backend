@@ -20,4 +20,6 @@ public interface VoteRepository extends JpaRepository<Vote, UUID> {
     )
     List<Vote> findByUsername(String username);
 
+    void deleteAllByPollId(UUID pollId);
+
 }
