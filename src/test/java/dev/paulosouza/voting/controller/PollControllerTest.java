@@ -14,9 +14,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PollControllerTest extends AbstractControllerTest {
 
     private static final String BASE_URI = "/polls";
+
+    private static final String GET_ID = "0ff8f479-c747-4a97-bb39-f61b401a8e0e";
+
+    private static final String NOT_FOUND_ID = UUID.randomUUID().toString();
 
     private static final String STOP_ID = "9a8537ac-d939-4ab8-844c-2254087757e5";
 
@@ -53,6 +59,34 @@ class PollControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("id").isNotEmpty());
 
         matchResult(resultActions, request);
+    }
+
+    @Test
+    void find() throws Exception {
+        this.mockMvc.perform(
+                        get(BASE_URI + "/" + GET_ID)
+                                .header(HttpHeaders.AUTHORIZATION, getBasicHeader())
+                                .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").isNotEmpty())
+                .andExpect(jsonPath("summarizedVotes").isNotEmpty())
+                .andExpect(jsonPath("title").value("Poll test get"))
+                .andExpect(jsonPath("subtitle").value("Test"))
+                .andExpect(jsonPath("summarizedVotes[0].username").value("test1"))
+                .andExpect(jsonPath("summarizedVotes[0].votes").value("1"))
+                .andExpect(jsonPath("summarizedVotes[1].username").value("test2"))
+                .andExpect(jsonPath("summarizedVotes[1].votes").value("2"));
+    }
+
+    @Test
+    void findNotFound() throws Exception {
+        this.mockMvc.perform(
+                        get(BASE_URI + "/" + NOT_FOUND_ID)
+                                .header(HttpHeaders.AUTHORIZATION, getBasicHeader())
+                                .contentType("application/json")
+                )
+                .andExpect(status().isNotFound());
     }
 
     @Test

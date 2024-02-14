@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = { OptionMapper.class })
+@Mapper(uses = { OptionMapper.class, SummarizedVoteMapper.class })
 public interface PollMapper {
 
     PollMapper INSTANCE = Mappers.getMapper(PollMapper.class);

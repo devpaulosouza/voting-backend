@@ -18,4 +18,6 @@ public class PollResponse {
 
     private List<OptionResponse> options;
 
+    private List<SummarizedVoteResponse> summarizedVotes;
+
 }

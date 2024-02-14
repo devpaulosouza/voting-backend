@@ -28,6 +28,8 @@ CREATE TABLE summarized_votes
 (
     poll_id UUID NOT NULL,
     username VARCHAR(50) NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT Now(),
+	updated_at TIMESTAMP NOT NULL DEFAULT Now(),
     votes BIGINT NOT NULL DEFAULT 0,
     PRIMARY KEY(poll_id, username),
     FOREIGN KEY (poll_id) REFERENCES polls(id),

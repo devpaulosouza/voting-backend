@@ -34,6 +34,7 @@ public class Poll extends BaseEntity implements Serializable {
     private List<Option> options;
 
     @OneToMany(mappedBy = "id.poll", cascade = { CascadeType.ALL })
+    @OrderBy("created_at DESC")
     private List<SummarizedVote> summarizedVotes;
 
 }

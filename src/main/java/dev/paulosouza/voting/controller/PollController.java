@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,25 @@ public class PollController {
         PollResponse response = this.service.create(request);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Operation(description = "Gets a poll")
+    @ApiResponse(responseCode = "200", description = "Poll found")
+    @ApiResponse(responseCode = "404", description = "Poll was not found")
+    @GetMapping("/{pollId}")
+    public ResponseEntity<PollResponse> get(@PathVariable("pollId") UUID pollId) {
+        PollResponse response = this.service.find(pollId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(description = "Gets a poll")
+    @ApiResponse(responseCode = "200", description = "Polls")
+    @GetMapping
+    public ResponseEntity<Page<PollResponse>> getAll(Pageable pageable) {
+        Page<PollResponse> response = this.service.findAll(pageable);
+
+        return ResponseEntity.ok(response);
     }
 
     @Operation(description = "Stops a poll")

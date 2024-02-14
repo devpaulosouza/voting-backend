@@ -13,6 +13,8 @@ import dev.paulosouza.voting.repository.OptionRepository;
 import dev.paulosouza.voting.repository.PollRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -38,9 +40,19 @@ public class PollService {
         return PollMapper.INSTANCE.toResponse(entity);
     }
 
+    public PollResponse find(UUID id) {
+        Poll entity = this.getPoll(id);
+        return PollMapper.INSTANCE.toResponse(entity);
+    }
+
+    public Page<PollResponse> findAll(Pageable pageable) {
+        Page<Poll> entities = this.repository.findAll(pageable);
+
+        return entities.map(PollMapper.INSTANCE::toResponse);
+    }
+
     public void stop(UUID id) {
-        Poll entity = this.repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+        Poll entity = getPoll(id);
 
         if (entity.isStopped()) {
             throw new UnprocessableEntityException("Poll is already stopped");
@@ -61,5 +73,10 @@ public class PollService {
     private Option getOption(String username) {
         return this.optionRepository.findById(username)
                 .orElseThrow(() -> new UnprocessableEntityException(String.format("Option with username %s was not found", username)));
+    }
+
+    private Poll getPoll(UUID id) {
+        return this.repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
     }
 }
