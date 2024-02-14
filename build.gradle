@@ -51,3 +51,9 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.jar {
+	manifest.attributes["Main-Class"] = "dev.paulosouza.voting.VotingApplication"
+	enabled = false
+}
+
