@@ -1,6 +1,7 @@
 package dev.paulosouza.voting.controller;
 
 import dev.paulosouza.voting.dto.response.PollResponse;
+import dev.paulosouza.voting.dto.response.ResumedPollResponse;
 import dev.paulosouza.voting.service.PollService;
 import dev.paulosouza.voting.service.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +33,15 @@ public class PublicController {
     }
 
     @GetMapping("/polls")
-    public ResponseEntity<Page<PollResponse>> getPolls(Pageable pageable) {
-        Page<PollResponse> response = this.pollService.findAll(pageable);
+    public ResponseEntity<Page<ResumedPollResponse>> getPolls(Pageable pageable) {
+        Page<ResumedPollResponse> response = this.pollService.findAllResumed(pageable);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/polls/{pollId}")
-    public ResponseEntity<PollResponse> getPolls(@PathVariable("pollId") UUID pollId) {
-        PollResponse response = this.pollService.find(pollId);
+    public ResponseEntity<ResumedPollResponse> getPolls(@PathVariable("pollId") UUID pollId) {
+        ResumedPollResponse response = this.pollService.findResumed(pollId);
 
         return ResponseEntity.ok(response);
     }

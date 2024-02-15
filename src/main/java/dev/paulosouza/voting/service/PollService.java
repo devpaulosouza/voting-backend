@@ -2,6 +2,7 @@ package dev.paulosouza.voting.service;
 
 import dev.paulosouza.voting.dto.request.PollRequest;
 import dev.paulosouza.voting.dto.response.PollResponse;
+import dev.paulosouza.voting.dto.response.ResumedPollResponse;
 import dev.paulosouza.voting.exception.NotFoundException;
 import dev.paulosouza.voting.exception.UnprocessableEntityException;
 import dev.paulosouza.voting.mapper.PollMapper;
@@ -45,6 +46,7 @@ public class PollService {
 
     public PollResponse find(UUID id) {
         Poll entity = this.getPoll(id);
+
         return PollMapper.INSTANCE.toResponse(entity);
     }
 
@@ -52,6 +54,18 @@ public class PollService {
         Page<Poll> entities = this.repository.findAll(pageable);
 
         return entities.map(PollMapper.INSTANCE::toResponse);
+    }
+
+    public ResumedPollResponse findResumed(UUID id) {
+        Poll entity = this.getPoll(id);
+
+        return PollMapper.INSTANCE.toResumedResponse(entity);
+    }
+
+    public Page<ResumedPollResponse> findAllResumed(Pageable pageable) {
+        Page<Poll> entities = this.repository.findAll(pageable);
+
+        return entities.map(PollMapper.INSTANCE::toResumedResponse);
     }
 
     public void stop(UUID id) {

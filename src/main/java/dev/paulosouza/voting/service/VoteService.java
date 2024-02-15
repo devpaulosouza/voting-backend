@@ -88,7 +88,7 @@ public class VoteService {
         ReCaptchaResponse response = this.reCaptchaClient.get(this.recaptchaSecret, recaptcha);
 
         if (response.getScore() < 0.5) {
-            throw new UnprocessableEntityException("Bad score");
+            throw new UnprocessableEntityException("Bad score " + response.getScore());
         }
 
         if(!response.isSuccess()) {
