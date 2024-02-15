@@ -55,6 +55,8 @@ public class VoteService {
         Poll poll = this.pollRepository.findById(pollId)
                 .orElseThrow(() -> new NotFoundException(pollId));
 
+        this.validate(poll);
+
         SummarizedVote summarizedVote = poll.getSummarizedVotes()
                 .stream()
                 .filter(vote -> username.equalsIgnoreCase(vote.getId().getOption().getUsername()))
@@ -66,6 +68,12 @@ public class VoteService {
         Vote vote = new Vote(summarizedVote.getId().getOption(), summarizedVote.getId().getPoll());
 
         this.repository.save(vote);
+    }
+
+    private void validate(Poll poll) {
+        if (poll.isStopped()) {
+            throw new UnprocessableEntityException("Poll is stopped");
+        }
     }
 
     private void validateCaptcha(String recaptcha) {
