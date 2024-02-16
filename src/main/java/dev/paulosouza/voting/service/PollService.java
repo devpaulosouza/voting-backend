@@ -51,7 +51,7 @@ public class PollService {
     }
 
     public Page<PollResponse> findAll(Pageable pageable) {
-        Page<Poll> entities = this.repository.findAll(pageable);
+        Page<Poll> entities = this.repository.findAllByStoppedIsFalse(pageable);
 
         return entities.map(PollMapper.INSTANCE::toResponse);
     }
@@ -63,7 +63,7 @@ public class PollService {
     }
 
     public Page<ResumedPollResponse> findAllResumed(Pageable pageable) {
-        Page<Poll> entities = this.repository.findAll(pageable);
+        Page<Poll> entities = this.repository.findAllByStoppedIsFalse(pageable);
 
         return entities.map(PollMapper.INSTANCE::toResumedResponse);
     }

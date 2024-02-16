@@ -1,6 +1,7 @@
 package dev.paulosouza.voting.service;
 
 import dev.paulosouza.voting.client.ReCaptchaClient;
+import dev.paulosouza.voting.dto.request.ReCaptchaRequest;
 import dev.paulosouza.voting.dto.response.ReCaptchaResponse;
 import dev.paulosouza.voting.exception.NotFoundException;
 import dev.paulosouza.voting.exception.UnprocessableEntityException;
@@ -85,11 +86,12 @@ public class VoteService {
             throw new UnprocessableEntityException("Response contains invalid characters");
         }
 
-        ReCaptchaResponse response = this.reCaptchaClient.get(this.recaptchaSecret, recaptcha);
+        ReCaptchaRequest request = new ReCaptchaRequest();
 
-        if (response.getScore() < 0.5) {
-            throw new UnprocessableEntityException("Bad score " + response.getScore());
-        }
+        request.setResponse(recaptcha);
+        request.setSecret(this.recaptchaSecret);
+
+        ReCaptchaResponse response = this.reCaptchaClient.post(request);
 
         if(!response.isSuccess()) {
             throw new UnprocessableEntityException("reCaptcha was not successfully validated");

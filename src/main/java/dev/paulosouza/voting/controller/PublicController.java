@@ -1,6 +1,5 @@
 package dev.paulosouza.voting.controller;
 
-import dev.paulosouza.voting.dto.response.PollResponse;
 import dev.paulosouza.voting.dto.response.ResumedPollResponse;
 import dev.paulosouza.voting.service.PollService;
 import dev.paulosouza.voting.service.VoteService;
@@ -25,7 +24,7 @@ public class PublicController {
     public ResponseEntity<Void> vote(
             @PathVariable("pollId") UUID pollId,
             @PathVariable("username") String username,
-            @RequestParam("recaptcha") String recaptcha
+            @RequestHeader("recaptcha") String recaptcha
     ) {
         this.voteService.vote(pollId, username, recaptcha);
 
